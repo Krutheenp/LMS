@@ -78,6 +78,9 @@ export default function DashboardLayout({
           <a href="/activities" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded transition">
             📋 กิจกรรม
           </a>
+          <a href="/badges" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded transition">
+            🎖️ แบดจ์
+          </a>
           <a href="/profile" className="block px-4 py-2 text-gray-700 hover:bg-blue-50 hover:text-blue-600 rounded transition">
             👤 โปรไฟล์
           </a>
