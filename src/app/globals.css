@@ -1,0 +1,85 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply box-border;
+}
+
+html {
+  @apply scroll-smooth;
+}
+
+body {
+  @apply bg-gray-50 text-gray-900;
+}
+
+/* ===== Custom Styles ===== */
+
+.badge-circle {
+  @apply rounded-full flex items-center justify-center text-white font-bold shadow-lg;
+}
+
+.badge-gold {
+  @apply bg-gold;
+}
+
+.badge-silver {
+  @apply bg-silver text-gray-900;
+}
+
+.badge-bronze {
+  @apply bg-bronze;
+}
+
+.card-hover {
+  @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+}
+
+.btn-primary {
+  @apply bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors;
+}
+
+.btn-secondary {
+  @apply bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg transition-colors;
+}
+
+.btn-danger {
+  @apply bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors;
+}
+
+.btn-success {
+  @apply bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded-lg transition-colors;
+}
+
+.fade-in {
+  @apply animate-fade-in;
+}
+
+.bounce-in {
+  @apply animate-bounce-in;
+}
+
+/* ===== Progress Bar ===== */
+
+.progress-bar {
+  @apply w-full bg-gray-200 rounded-full h-2 overflow-hidden;
+}
+
+.progress-fill {
+  @apply h-full bg-blue-500 transition-all duration-500;
+}
+
+/* ===== Table Styles ===== */
+
+.table-header {
+  @apply bg-gray-100 font-semibold text-left px-4 py-3 border-b;
+}
+
+.table-cell {
+  @apply px-4 py-3 border-b border-gray-200;
+}
+
+.table-row-hover {
+  @apply hover:bg-gray-50 transition-colors;
+}

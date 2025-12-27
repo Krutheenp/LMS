@@ -1,0 +1,134 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+// ====== MODELS ======
+
+/// User/Member Model
+model User {
+  id    String  @id @default(cuid())
+  email String  @unique
+  password String
+  name  String
+  role  String  @default("MEMBER") // MEMBER | ADMIN
+  
+  // Profile Info
+  profileImage String?
+  totalScore   Int     @default(0)
+  level        String  @default("BEGINNER") // BEGINNER | INTERMEDIATE | ADVANCED | EXPERT
+  
+  // Relations
+  submissions     Submission[]
+  badges          Badge[]
+  activityProgress ActivityProgress[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([role])
+  @@index([email])
+}
+
+/// Activity Model
+model Activity {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  
+  // Scoring
+  maxScore    Int
+  gradeLevel  String   @default("A") // A | B | C | D | F
+  
+  // Dates
+  startDate   DateTime
+  endDate     DateTime
+  
+  // Relations
+  submissions     Submission[]
+  badges          Badge[]
+  progress        ActivityProgress[]
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([startDate])
+  @@index([endDate])
+}
+
+/// Submission Model (งานที่ส่ง)
+model Submission {
+  id            String    @id @default(cuid())
+  userId        String
+  activityId    String
+  
+  // Status & Dates
+  status        String    @default("NOT_STARTED") // NOT_STARTED | SUBMITTED | APPROVED | REJECTED
+  submittedDate DateTime?
+  approvalDate  DateTime?
+  
+  // Grading
+  score         Int?
+  comments      String?
+  
+  // File Attachments (JSON string for SQLite compatibility)
+  fileUrls      String    @default("[]") // Store as JSON string
+  
+  // Relations
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity      Activity  @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, activityId])
+  @@index([userId])
+  @@index([activityId])
+  @@index([status])
+}
+
+/// Badge Model (เหรียญ/ส่วนสำนักพิมพ์)
+model Badge {
+  id        String   @id @default(cuid())
+  userId    String
+  activityId String
+  
+  earnedDate DateTime @default(now())
+  points     Int
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity  Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, activityId])
+  @@index([userId])
+  @@index([activityId])
+}
+
+/// Activity Progress Model (ติดตามความคืบหน้า)
+model ActivityProgress {
+  id          String   @id @default(cuid())
+  userId      String
+  activityId  String
+  
+  completionPercentage Int @default(0) // 0-100
+  lastUpdated DateTime @updatedAt
+  
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  activity  Activity @relation(fields: [activityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, activityId])
+  @@index([userId])
+  @@index([activityId])
+}
