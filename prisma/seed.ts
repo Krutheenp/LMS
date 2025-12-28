@@ -84,7 +84,7 @@ async function main() {
           approvalDate: new Date(),
           score: score,
           comments: 'ดีมาก',
-          fileUrl: '/uploads/file1.pdf',
+          fileUrls: JSON.stringify(['/uploads/file1.pdf']),
         },
       })
 
