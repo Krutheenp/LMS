@@ -27,7 +27,7 @@ export default function DashboardLayout({
         if (cookie.trim().startsWith('auth-token=')) {
           try {
             const token = cookie.trim().substring('auth-token='.length)
-            const decoded = JSON.parse(Buffer.from(token, 'base64').toString())
+            const decoded = JSON.parse(atob(token))
             setUser({
               id: decoded.userId,
               email: decoded.email,

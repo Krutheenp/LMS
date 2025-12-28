@@ -29,7 +29,8 @@ export default function BadgesPage() {
         if (cookie.trim().startsWith('auth-token=')) {
           try {
             const token = cookie.trim().substring('auth-token='.length)
-            const decoded = JSON.parse(Buffer.from(token, 'base64').toString())
+            // Decode base64 in browser using atob
+            const decoded = JSON.parse(atob(token))
             return decoded.userId
           } catch (e) {
             console.error('Failed to decode user:', e)
