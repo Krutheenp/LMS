@@ -250,18 +250,3 @@ export default function AdminMembersPage() {
     </div>
   )
 }
-        <Button
-          variant="secondary"
-          disabled={page === 1}
-          onClick={() => setPage(page - 1)}
-        >
-          ← ก่อนหน้า
-        </Button>
-        <span className="px-4 py-2 bg-white rounded">หน้า {page}</span>
-        <Button variant="secondary" onClick={() => setPage(page + 1)}>
-          ถัดไป →
-        </Button>
-      </div>
-    </div>
-  )
-}

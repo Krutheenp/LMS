@@ -360,8 +360,3 @@ export default function AdminReviewsPage() {
     </div>
   )
 }
-
-      {/* Grading Modal would go here */}
-    </div>
-  )
-}

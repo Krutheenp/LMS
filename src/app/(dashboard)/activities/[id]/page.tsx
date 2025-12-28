@@ -210,7 +210,13 @@ export default function ActivityDetailPage() {
                 ระดับ: {activity.gradeLevel}
               </p>
             </div>
-            {submission && <StatusBadge status={submission.status} />}
+            {submission && (
+              <StatusBadge 
+                status={
+                  submission.status as 'NOT_STARTED' | 'SUBMITTED' | 'APPROVED' | 'REJECTED'
+                } 
+              />
+            )}
           </div>
         </CardHeader>
         <CardContent className="space-y-4">

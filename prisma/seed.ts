@@ -84,7 +84,7 @@ async function main() {
           approvalDate: new Date(),
           score: score,
           comments: 'ดีมาก',
-          fileUrls: ['/uploads/file1.pdf', '/uploads/file2.pdf'],
+          fileUrl: '/uploads/file1.pdf',
         },
       })
 

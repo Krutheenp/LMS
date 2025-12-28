@@ -36,7 +36,6 @@ export function formatDateTh(date: Date | string): string {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
-    locale: 'th-TH',
   }
   return new Intl.DateTimeFormat('th-TH', options).format(d)
 }
