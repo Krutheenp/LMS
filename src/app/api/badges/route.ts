@@ -1,3 +1,5 @@
+export const dynamic = 'force-dynamic'
+
 import db from '@/lib/db'
 
 interface Badge {
@@ -82,10 +84,10 @@ export async function GET(request: Request) {
     // Get all badges
     const allBadges = BADGES
 
-    // Get user submissions
-    const submissions = db
-      .prepare('SELECT * FROM Submission WHERE userId = ?')
-      .all(userId) as any[]
+    // Get user submissions using Prisma
+    const submissions = await db.submission.findMany({
+      where: { userId },
+    })
 
     // Calculate earned badges
     const earnedBadges: string[] = []
@@ -117,28 +119,32 @@ export async function GET(request: Request) {
     }
 
     // Check perfect_score (ได้คะแนนเต็ม)
-    const perfectScoreCount = submissions.filter((s) => {
-      if (!s.score) return false
-      // Get activity max score
-      const activity = db
-        .prepare('SELECT maxScore FROM Activity WHERE id = ?')
-        .get(s.activityId) as any
-      return activity && s.score === activity.maxScore
-    }).length
-    if (perfectScoreCount >= 1) {
+    const perfectScores = await Promise.all(
+      submissions
+        .filter((s) => s.score)
+        .map(async (s) => {
+          const activity = await db.activity.findUnique({
+            where: { id: s.activityId },
+          })
+          return activity && s.score === activity.maxScore
+        })
+    )
+    if (perfectScores.filter(Boolean).length >= 1) {
       earnedBadges.push('perfect_score')
     }
 
     // Check high_score (ได้คะแนนสูง 10 ครั้ง)
-    const highScoreCount = submissions.filter((s) => {
-      if (!s.score) return false
-      // Get activity max score
-      const activity = db
-        .prepare('SELECT maxScore FROM Activity WHERE id = ?')
-        .get(s.activityId) as any
-      return activity && s.score / activity.maxScore >= 0.8
-    }).length
-    if (highScoreCount >= 10) {
+    const highScores = await Promise.all(
+      submissions
+        .filter((s) => s.score)
+        .map(async (s) => {
+          const activity = await db.activity.findUnique({
+            where: { id: s.activityId },
+          })
+          return activity && s.score! / activity.maxScore >= 0.8
+        })
+    )
+    if (highScores.filter(Boolean).length >= 10) {
       earnedBadges.push('high_score')
     }
 
